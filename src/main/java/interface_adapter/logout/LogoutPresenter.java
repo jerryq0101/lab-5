@@ -7,13 +7,11 @@ import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.logout.LogoutOutputData;
-import view.LoggedInView;
 
 /**
  * The Presenter for the Logout Use Case.
  */
 public class LogoutPresenter implements LogoutOutputBoundary {
-
     private LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
     private LoginViewModel loginViewModel;
@@ -21,7 +19,6 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     public LogoutPresenter(ViewManagerModel viewManagerModel,
                           LoggedInViewModel loggedInViewModel,
                            LoginViewModel loginViewModel) {
-        // TODO: assign to the three instance variables.
         this.loggedInViewModel = loggedInViewModel;
         this.viewManagerModel = viewManagerModel;
         this.loginViewModel = loginViewModel;
@@ -35,7 +32,6 @@ public class LogoutPresenter implements LogoutOutputBoundary {
         // We also need to set the username in the LoggedInState to
         // the empty string.
 
-        // TODO: have prepareSuccessView update the LoggedInState
         // 1. get the LoggedInState out of the appropriate View Model,
         final LoggedInState state = loggedInViewModel.getState();
 
@@ -46,7 +42,6 @@ public class LogoutPresenter implements LogoutOutputBoundary {
         // 4. firePropertyChanged so that the View that is listening is updated.
         this.loggedInViewModel.firePropertyChanged();
 
-        // TODO: have prepareSuccessView update the LoginState
         // 5. get the LoginState out of the appropriate View Model,
         final LoginState loginState = this.loginViewModel.getState();
         // 6. set the username and password in the state to the empty string
@@ -65,6 +60,6 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     @Override
     public void prepareFailView(String error) {
         // No need to add code here. We'll assume that logout can't fail.
-        // Thought question: is this a reasonable assumption?
+        // Thought question: is this a reasonable assumption? I believe so.
     }
 }

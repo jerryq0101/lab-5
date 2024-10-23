@@ -1,7 +1,9 @@
 package interface_adapter.logout;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 import use_case.logout.LogoutOutputBoundary;
 import use_case.logout.LogoutOutputData;
@@ -10,7 +12,6 @@ import use_case.logout.LogoutOutputData;
  * The Presenter for the Logout Use Case.
  */
 public class LogoutPresenter implements LogoutOutputBoundary {
-
     private LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
     private LoginViewModel loginViewModel;
@@ -18,7 +19,9 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     public LogoutPresenter(ViewManagerModel viewManagerModel,
                           LoggedInViewModel loggedInViewModel,
                            LoginViewModel loginViewModel) {
-        // TODO: assign to the three instance variables.
+        this.loggedInViewModel = loggedInViewModel;
+        this.viewManagerModel = viewManagerModel;
+        this.loginViewModel = loginViewModel;
     }
 
     @Override
@@ -29,17 +32,25 @@ public class LogoutPresenter implements LogoutOutputBoundary {
         // We also need to set the username in the LoggedInState to
         // the empty string.
 
-        // TODO: have prepareSuccessView update the LoggedInState
         // 1. get the LoggedInState out of the appropriate View Model,
-        // 2. set the username in the state to the empty string
-        // 3. set the state in the LoggedInViewModel to the updated state
-        // 4. firePropertyChanged so that the View that is listening is updated.
+        final LoggedInState state = loggedInViewModel.getState();
 
-        // TODO: have prepareSuccessView update the LoginState
+        // 2. set the username in the state to the empty string
+        state.setUsername("");
+        // 3. set the state in the LoggedInViewModel to the updated state
+        this.loggedInViewModel.setState(state);
+        // 4. firePropertyChanged so that the View that is listening is updated.
+        this.loggedInViewModel.firePropertyChanged();
+
         // 5. get the LoginState out of the appropriate View Model,
+        final LoginState loginState = this.loginViewModel.getState();
         // 6. set the username and password in the state to the empty string
+        loginState.setUsername("");
+        loginState.setPassword("");
         // 7. set the state in the LoginViewModel to the updated state
+        this.loginViewModel.setState(loginState);
         // 8. firePropertyChanged so that the View that is listening is updated.
+        this.loginViewModel.firePropertyChanged();
 
         // This code tells the View Manager to switch to the LoginView.
         this.viewManagerModel.setState(loginViewModel.getViewName());
@@ -49,6 +60,6 @@ public class LogoutPresenter implements LogoutOutputBoundary {
     @Override
     public void prepareFailView(String error) {
         // No need to add code here. We'll assume that logout can't fail.
-        // Thought question: is this a reasonable assumption?
+        // Thought question: is this a reasonable assumption? I believe so.
     }
 }
